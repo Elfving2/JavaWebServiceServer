@@ -1,0 +1,16 @@
+
+{
+    "p1": {
+        "name" : "Sebastian",
+        "age": 22,
+        "favoriteColor": "Blue",
+        "data": [1,2,3,4,5]
+    },
+
+    "p2": {
+        "name" : "Max",
+        "age": 100,
+        "favoriteColor": "Red",
+        "data": ["a","b","c","d","e"]
+    }
+}
