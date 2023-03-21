@@ -5,35 +5,39 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
+
 
 public class Main {
     public static void main(String[] args) {
         final int port = 6969;
         try {
             ServerSocket serverSocket = new ServerSocket(port);
+            Socket socket;
 
 
-            while(true) {
-                Socket socket = serverSocket.accept();
-                System.out.println("client connected");
+            while (true) {
 
-                //read data from client
-                InputStream input = socket.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                try{
+                    socket = serverSocket.accept();
+                    // create a new socket everytime a new client connects
 
-                String time = reader.readLine();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-                System.out.println(time);
+                    while(true) {
+                        //Read what client has sent
+                        String messageFromClient = br.readLine();
+                        System.out.println("Client: " + messageFromClient);
 
-                //send data to client
-                OutputStream output = socket.getOutputStream();
-                PrintWriter writer = new PrintWriter(output, true);
-
-                writer.println(fetchJsonFromFile());
-
+                        //send back message to client
+                        bw.write(fetchJsonFromFile().toJSONString());
+                        bw.newLine();
+                        bw.flush();
+                    }
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
             }
-
         } catch(IOException e) {
             System.out.println(e);
         }
@@ -64,6 +68,7 @@ public class Main {
 
         //System.out.println("Mitt namn är " + nameP1 + " jag är " + ageP1 + " år");
         //System.out.println("Mitt namn är " + nameP2 + " jag är " + ageP2 + " år");
+
         return p1;
     }
 }
