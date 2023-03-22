@@ -29,8 +29,21 @@ public class Main {
                         String messageFromClient = br.readLine();
                         System.out.println("Client: " + messageFromClient);
 
+
+//                        String html = "<html><head><title>Java HTTP Server</title></head><body>" +
+//                                fetchJsonFromFile() + "</body></html>";
+//
+//                        final String CRLF = "\n\r";
+//
+//                        String response = "HTTP/1.1 200 OK" + CRLF + "Content-Length: " +
+//                                html.getBytes().length + CRLF + CRLF + html + CRLF + CRLF;
+
+
+
                         //send back message to client
-                        bw.write(fetchJsonFromFile().toJSONString());
+                        bw.write(fetchJsonFromFile(messageFromClient).toJSONString());
+
+
                         bw.newLine();
                         bw.flush();
                     }
@@ -43,7 +56,7 @@ public class Main {
         }
 
     }
-    static JSONObject fetchJsonFromFile () {
+    static JSONObject fetchJsonFromFile (String message) {
         String filePath = "data.json";
 
         //hämta data från JSON fil
@@ -59,16 +72,15 @@ public class Main {
         }
 
         //konvertera data till ett JSONObject
-        JSONObject p1 = (JSONObject) fetchData.get("p1");
-        JSONObject p2 = (JSONObject) fetchData.get("p2");
+        JSONObject person = (JSONObject) fetchData.get(message);
+
+
 
         //hämta och srkia ut data
-        String nameP1 = p1.get("name").toString(), nameP2 = p2.get("name").toString();
-        int ageP1 = Integer.parseInt(p1.get("age").toString()), ageP2 = Integer.parseInt(p2.get("age").toString());
+        //String nameP1 = p1.get("name").toString(), nameP2 = p2.get("name").toString();
+        //int ageP1 = Integer.parseInt(p1.get("age").toString()), ageP2 = Integer.parseInt(p2.get("age").toString());
 
-        //System.out.println("Mitt namn är " + nameP1 + " jag är " + ageP1 + " år");
-        //System.out.println("Mitt namn är " + nameP2 + " jag är " + ageP2 + " år");
 
-        return p1;
+        return person;
     }
 }
